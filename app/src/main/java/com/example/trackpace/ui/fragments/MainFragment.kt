@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkCallingOrSelfPermission
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.trackpace.daos.LocationDao
 import com.example.trackpace.databinding.FragmentMainBinding
@@ -25,7 +26,7 @@ import com.google.android.gms.location.*
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
-
+    private val viewModel: TrackerViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +35,10 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding= FragmentMainBinding.inflate(inflater,container,false)
 
+        viewModel.loc.observe(viewLifecycleOwner, Observer { location->
+            val t="latt:${location.latitude} long:${location.longitude}"
+            binding.mainFragtxt.text=t
+        })
 
         return binding.root
     }
