@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.trackpace.R
 import com.example.trackpace.databinding.FragmentMapBinding
+import com.example.trackpace.ui.MainActivity
+import com.example.trackpace.viewmodels.TrackerViewModel
 
 
 class MapFragment : Fragment() {
@@ -19,6 +21,7 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding= FragmentMapBinding.inflate(inflater,container,false)
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

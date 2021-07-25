@@ -4,8 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import com.example.trackpace.MainActivity
-import com.example.trackpace.R
 import com.example.trackpace.databinding.ActivitySplashScreenBinding
 
 class SplashScreen : AppCompatActivity() {
