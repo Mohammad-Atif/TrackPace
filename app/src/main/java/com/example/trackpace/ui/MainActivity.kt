@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkPermission(this,permissions)) {
-                viewModel.startTracking(this)
+                viewModel.startLocationUpdates(this)
             } else {
                 requestPermissions(arrayOf(permissions), PERMISSION_REQUEST)
             }
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 //
 //            getLocationUpdates()
 //            startLocationUpdates()
-            viewModel.startTracking(this)
+            viewModel.startLocationUpdates(this)
 
         }
 
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
 //
 //        getLocationUpdates()
 //        startLocationUpdates()
-        viewModel.startTracking(this)
+        viewModel.startLocationUpdates(this)
     }
 
     fun checkPermission(context: Context, permiss: String): Boolean {
