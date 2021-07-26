@@ -18,42 +18,11 @@ class TrackerViewModel:ViewModel() {
     val loc:MutableLiveData<Location> = MutableLiveData()
 
 
-//    fun startTracking(context: Context){
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-//
-//        getLocationUpdates(context)
-//        startLocationUpdates()
-//    }
-    
-    
-//    private fun getLocationUpdates()
-//    {
-//
-//
-//        locationRequest = LocationRequest()
-//        locationRequest.interval = TimeUnit.SECONDS.toMillis(60)
-//        locationRequest.fastestInterval = TimeUnit.SECONDS.toMillis(30)
-//        locationRequest.smallestDisplacement = 1f // 170 m = 0.1 mile
-//        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY //set according to your app function
-//        locationCallback = object : LocationCallback() {
-//            override fun onLocationResult(locationResult: LocationResult?) {
-//                locationResult ?: return
-//
-//                if (locationResult.locations.isNotEmpty()) {
-//                    // get latest location
-//                    val location =
-//                        locationResult.lastLocation
-//                    // use your location object
-//                    // get latitude , longitude and other info from this
-//                    Log.d("location check","latt:${location.latitude} long:${location.longitude}")
-//                    loc.postValue(location)
-//                }
-//
-//
-//            }
-//        }
-//    }
 
+    /*
+    This function will recieve regular location update
+    Done throud FusedLocationProviderClient class
+     */
     @SuppressLint("MissingPermission")
     fun startLocationUpdates(context: Context) {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
@@ -63,6 +32,7 @@ class TrackerViewModel:ViewModel() {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
 
+        // LocationCallback - Called when FusedLocationProviderClient has a new Location.
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)

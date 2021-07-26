@@ -36,8 +36,8 @@ class MainFragment : Fragment() {
         binding= FragmentMainBinding.inflate(inflater,container,false)
 
         viewModel.loc.observe(viewLifecycleOwner, Observer { location->
-            val t="latt:${location.latitude} long:${location.longitude}"
-            binding.mainFragtxt.text=t
+            val t=location.latitude.toInt()
+            binding.txtDistanceValue.text=t.toString()
         })
 
         return binding.root
