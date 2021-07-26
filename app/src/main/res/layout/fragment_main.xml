@@ -12,14 +12,16 @@
         android:id="@+id/cardCalBurned"
         android:layout_width="123dp"
         android:layout_height="101dp"
-        android:layout_marginTop="124dp"
+
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cardDistance"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnTimer"
-        app:layout_constraintVertical_bias="0.0" >
+        android:layout_marginBottom="17dp"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Cal burned"
+                android:text="@string/cal_burned"
                 android:textColor="#4D2C23"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +50,7 @@
                 android:layout_marginEnd="13dp"
                 android:layout_marginRight="13dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="430"
+                android:text="@string/_430"
                 android:textColor="#4D2C23"
                 android:textSize="28sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,13 +80,15 @@
         android:id="@+id/cardDistance"
         android:layout_width="123dp"
         android:layout_height="101dp"
-        android:layout_marginTop="12dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardCalBurned"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardCalBurned"
-        app:layout_constraintTop_toBottomOf="@+id/cardCalBurned" >
+        android:layout_marginBottom="17dp"
+        app:layout_constraintBottom_toTopOf="@+id/cardSteps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardCalBurned">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -95,12 +99,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="68dp"
                 android:layout_marginRight="68dp"
+                android:contentDescription="@string/locationimage"
                 android:src="@drawable/location"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                android:contentDescription="@string/locationimage"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -108,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="km"
+                android:text="@string/km"
                 android:textColor="#4D2C23"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -126,7 +130,7 @@
                 android:layout_marginEnd="13dp"
                 android:layout_marginRight="13dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="0.9"
+                android:text="@string/_0_9"
                 android:textColor="#4D2C23"
                 android:textSize="28sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -141,13 +145,14 @@
         android:id="@+id/cardSteps"
         android:layout_width="123dp"
         android:layout_height="101dp"
-        android:layout_marginTop="12dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardDistance"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/cardDistance"
-        app:layout_constraintTop_toBottomOf="@+id/cardDistance" >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardDistance">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -158,12 +163,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="68dp"
                 android:layout_marginRight="68dp"
+                android:contentDescription="@string/runner_image"
                 android:src="@drawable/runner"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                android:contentDescription="@string/runner_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -172,7 +177,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Steps"
+                android:text="@string/steps"
                 android:textColor="#4D2C23"
                 android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -190,14 +195,13 @@
                 android:layout_marginEnd="13dp"
                 android:layout_marginRight="13dp"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="756"
+                android:text="@string/_756"
                 android:textColor="#4D2C23"
                 android:textSize="28sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/runnerImg"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
