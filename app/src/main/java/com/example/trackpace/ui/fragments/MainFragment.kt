@@ -4,6 +4,10 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker.PERMISSION_DENIED
 import androidx.core.content.PermissionChecker.checkCallingOrSelfPermission
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.example.trackpace.daos.LocationDao
 import com.example.trackpace.databinding.FragmentMainBinding
@@ -28,6 +33,7 @@ class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private val viewModel: TrackerViewModel by activityViewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,10 +41,7 @@ class MainFragment : Fragment() {
         // Inflate the layout for this fragment
         binding= FragmentMainBinding.inflate(inflater,container,false)
 
-        viewModel.loc.observe(viewLifecycleOwner, Observer { location->
-            val t=location.latitude.toInt()
-            binding.txtDistanceValue.text=t.toString()
-        })
+
 
         return binding.root
     }
@@ -51,8 +54,21 @@ class MainFragment : Fragment() {
 //            binding.mainFragtxt.text=t
 //        })
 
+        viewModel.travelledDistance.observe(viewLifecycleOwner, Observer { distance->
+            binding.txtDistanceValue.text=distance.toString()
+        })
+
+        binding.btnTimer.setOnClickListener {
+                viewModel.startCount()
+        }
+
+        viewModel.stepCount.observe(viewLifecycleOwner, Observer {steps->
+            binding.txtStepsValue.text=steps.toString()
+        })
+
 
     }
+
 
 
 
