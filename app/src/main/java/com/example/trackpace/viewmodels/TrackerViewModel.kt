@@ -3,9 +3,11 @@ package com.example.trackpace.viewmodels
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.SENSOR_SERVICE
+import android.content.SharedPreferences
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.location.Location
+import android.net.wifi.WifiConfiguration.AuthAlgorithm.strings
 import android.os.Build
 import android.os.Looper
 import android.util.Log
@@ -15,6 +17,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.*
+import java.lang.Math.abs
 import java.util.concurrent.TimeUnit
 
 class TrackerViewModel:ViewModel() {
@@ -28,7 +31,8 @@ class TrackerViewModel:ViewModel() {
     val travelledDistance:MutableLiveData<Float> = MutableLiveData(0f)
     val stepCount:MutableLiveData<Int> = MutableLiveData(0)
     val running:MutableLiveData<Boolean> = MutableLiveData(false)
-
+    var prev_count=0
+    var total_count=0
     /*
     This function will recieve regular location update
     Done throud FusedLocationProviderClient class
@@ -87,13 +91,27 @@ class TrackerViewModel:ViewModel() {
     }
 
     //function to start counting the number of steps using android step sensor
-    fun startCount(){
+    fun startCount(context: Context){
+        val sharedPreference=context.getSharedPreferences("forcounts",Context.MODE_PRIVATE)
+        val prev_value=sharedPreference.getInt("prev_counts_key",0)
         if(running.value==true)
         {
+            Log.d("timer","prev value:$prev_value")
+            val edit=sharedPreference.edit()
+            Log.d("timer","new prev val saving:${total_count}")
+            edit.putInt("prev_counts_key",total_count)
+            edit.apply()
+            edit.commit()
+            Toast.makeText(context,"Counter Stopped",Toast.LENGTH_SHORT).show()
             running.postValue(false)
         }
         else
         {
+            Log.d("timer","prev value:$prev_value")
+            total_count=prev_value
+            prev_count=prev_value
+
+            Toast.makeText(context,"Counter Started",Toast.LENGTH_SHORT).show()
             running.postValue(true)
             stepCount.postValue(0)
         }
@@ -102,7 +120,9 @@ class TrackerViewModel:ViewModel() {
 
 
     fun updatestepCount(counts:Int){
-        stepCount.postValue(counts)
+        Log.d("timer","update count:$counts")
+        total_count=counts
+        stepCount.postValue(kotlin.math.abs(counts - prev_count))
     }
 
     

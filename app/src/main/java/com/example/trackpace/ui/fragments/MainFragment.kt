@@ -3,6 +3,7 @@ package com.example.trackpace.ui.fragments
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -32,8 +33,7 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: TrackerViewModel by activityViewModels()
-
-
+    lateinit var  sharedPreference: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,12 +54,16 @@ class MainFragment : Fragment() {
 //            binding.mainFragtxt.text=t
 //        })
 
+        sharedPreference= activity?.getSharedPreferences("forcounts",Context.MODE_PRIVATE) ?:return
+        val prev_value=sharedPreference.getInt("prev_counts_key",0)
+
         viewModel.travelledDistance.observe(viewLifecycleOwner, Observer { distance->
             binding.txtDistanceValue.text=distance.toString()
         })
 
         binding.btnTimer.setOnClickListener {
-                viewModel.startCount()
+
+                viewModel.startCount(requireContext().applicationContext)
         }
 
         viewModel.stepCount.observe(viewLifecycleOwner, Observer {steps->

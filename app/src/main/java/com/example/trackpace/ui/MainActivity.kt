@@ -2,6 +2,7 @@ package com.example.trackpace.ui
 
 import android.Manifest
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -29,7 +30,14 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     Start Date 10/07/2021
      */
 
+    /*
+    Bug - the step counter start from the starting of the app  not when i click the timer button
+
+     */
+
     private lateinit var binding: ActivityMainBinding
+
+
 
     private var PERMISSION_REQUEST = 10
     private var SENSOR_REQUEST_CODE = 101
@@ -43,7 +51,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
         viewModel=ViewModelProvider(this).get(TrackerViewModel::class.java)
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkPermission(this,permissions)) {
@@ -78,6 +90,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                    sensorManager?.registerListener(this,
                         stepsSensor,
                         SensorManager.SENSOR_DELAY_UI)
+                }
+            }
+            else{
+                if(stepsSensor!=null)
+                {
+                    Log.d("timer","step counter deactivated")
+                    sensorManager?.unregisterListener(this)
                 }
             }
         })
