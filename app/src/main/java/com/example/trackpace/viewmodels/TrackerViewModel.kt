@@ -16,8 +16,18 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.trackpace.util.Constants.Companion.USER_AGE
+import com.example.trackpace.util.Constants.Companion.USER_GENDER
+import com.example.trackpace.util.Constants.Companion.USER_HEIGHT
+import com.example.trackpace.util.Constants.Companion.USER_WEIGHT
 import com.google.android.gms.location.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Math.abs
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class TrackerViewModel:ViewModel() {
@@ -31,8 +41,10 @@ class TrackerViewModel:ViewModel() {
     val travelledDistance:MutableLiveData<Float> = MutableLiveData(0f)
     val stepCount:MutableLiveData<Int> = MutableLiveData(0)
     val running:MutableLiveData<Boolean> = MutableLiveData(false)
+    val calBurned:MutableLiveData<Int> = MutableLiveData(0)
     var prev_count=0
     var total_count=0
+    var startTime=0
     /*
     This function will recieve regular location update
     Done throud FusedLocationProviderClient class
@@ -104,13 +116,14 @@ class TrackerViewModel:ViewModel() {
             edit.commit()
             Toast.makeText(context,"Counter Stopped",Toast.LENGTH_SHORT).show()
             running.postValue(false)
+            startCalorieTracking(sharedPreference)
         }
         else
         {
             Log.d("timer","prev value:$prev_value")
             total_count=prev_value
             prev_count=prev_value
-
+            startCalorieTracking(sharedPreference)
             Toast.makeText(context,"Counter Started",Toast.LENGTH_SHORT).show()
             running.postValue(true)
             stepCount.postValue(0)
@@ -124,6 +137,64 @@ class TrackerViewModel:ViewModel() {
         total_count=counts
         stepCount.postValue(kotlin.math.abs(counts - prev_count))
     }
+
+    /*
+    how to calculate calories burned(formuale)
+    -https://www.medicalnewstoday.com/articles/325323#calories-burned-while-walking
+     */
+    private suspend fun calculateCaloriesBurned(weight:Int, height:Int, age:Int, duration:Int, gender:String):Int{
+        var bmr=0
+        if(gender=="Male")
+        {
+            bmr= (66+(6.23*weight)+(12.7*height)-(6.8*age)).toInt()
+        }
+        else
+        {
+            bmr= (66+(6.23*weight)+(12.7*height)-(6.8*age)).toInt()
+        }
+
+        val met=2.3f
+        val caloriesBurned:Float=(bmr*met)/(24*duration)
+        return caloriesBurned.toInt()
+
+    }
+
+    //this funtion will use Coroutine to call repeatedly calculate calories burned after delay(1000)
+    private fun startCalorieTracking(sharedPreferences: SharedPreferences){
+        val weight=sharedPreferences.getInt(USER_WEIGHT,0)
+        val age=sharedPreferences.getInt(USER_AGE,0)
+        val height=sharedPreferences.getInt(USER_HEIGHT,0)
+        val gender=sharedPreferences.getString(USER_GENDER,"null")
+        val c=Calendar.getInstance()
+        val hour=c.get(Calendar.HOUR_OF_DAY)
+        val minute=c.get(Calendar.MINUTE)
+        if(gender!="null")
+        {
+            Log.d("timer","calorieCounter: running")
+            viewModelScope.launch {
+                while(running.value!!){
+                    val currentHour=c.get(Calendar.HOUR_OF_DAY)
+                    val currentMinute=c.get(Calendar.MINUTE)
+                    val d=(currentHour-hour)*60 + (currentMinute-minute)
+                    val cals=calculateCaloriesBurned(weight = weight,
+                        height = height,
+                        age = age,
+                        gender = gender!!,
+                    duration = d )
+                    withContext(Main){
+                        calBurned.postValue(cals)
+                    }
+                    delay(60000)    //1 minute
+                }
+            }
+        }
+        else
+        {
+            Log.d("timer","calorieCounter: Not running")
+        }
+
+    }
+
 
     
 
