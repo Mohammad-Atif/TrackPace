@@ -116,17 +116,21 @@ class TrackerViewModel:ViewModel() {
             edit.commit()
             Toast.makeText(context,"Counter Stopped",Toast.LENGTH_SHORT).show()
             running.postValue(false)
-            startCalorieTracking(sharedPreference)
+            //startCalorieTracking(sharedPreference)
         }
         else
         {
             Log.d("timer","prev value:$prev_value")
             total_count=prev_value
             prev_count=prev_value
-            startCalorieTracking(sharedPreference)
             Toast.makeText(context,"Counter Started",Toast.LENGTH_SHORT).show()
-            running.postValue(true)
+            running.postValue(true).also {
+                startCalorieTracking(sharedPreference)
+            }
+
             stepCount.postValue(0)
+            travelledDistance.postValue(0f)
+            calBurned.postValue(0)
         }
 
     }
@@ -144,6 +148,7 @@ class TrackerViewModel:ViewModel() {
      */
     private suspend fun calculateCaloriesBurned(weight:Int, height:Int, age:Int, duration:Int, gender:String):Int{
         var bmr=0
+        Log.d("timer","corutine function called")
         if(gender=="Male")
         {
             bmr= (66+(6.23*weight)+(12.7*height)-(6.8*age)).toInt()
@@ -170,9 +175,10 @@ class TrackerViewModel:ViewModel() {
         val minute=c.get(Calendar.MINUTE)
         if(gender!="null")
         {
-            Log.d("timer","calorieCounter: running")
+            Log.d("timer","calorieCounter: running ${running.value.toString()}")
+            var startVal=true
             viewModelScope.launch {
-                while(running.value!!){
+                while(startVal){
                     val currentHour=c.get(Calendar.HOUR_OF_DAY)
                     val currentMinute=c.get(Calendar.MINUTE)
                     val d=(currentHour-hour)*60 + (currentMinute-minute)
@@ -184,7 +190,8 @@ class TrackerViewModel:ViewModel() {
                     withContext(Main){
                         calBurned.postValue(cals)
                     }
-                    delay(60000)    //1 minute
+                    delay(60000) //1 minute
+                    startVal=running.value!!
                 }
             }
         }

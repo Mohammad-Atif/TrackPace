@@ -70,6 +70,10 @@ class MainFragment : Fragment() {
             binding.txtStepsValue.text=steps.toString()
         })
 
+        viewModel.calBurned.observe(viewLifecycleOwner, Observer {cals->
+            binding.txtCalBurnedValue.text=cals.toString()
+        })
+
 
     }
 
