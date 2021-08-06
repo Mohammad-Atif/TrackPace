@@ -31,9 +31,9 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class TrackerViewModel:ViewModel() {
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var locationCallback: LocationCallback
+    private var fusedLocationClient: FusedLocationProviderClient?=null
+    private var locationRequest: LocationRequest?=null
+    private var locationCallback: LocationCallback?=null
 
     var sensorManager:SensorManager? = null
 
@@ -42,6 +42,7 @@ class TrackerViewModel:ViewModel() {
     val stepCount:MutableLiveData<Int> = MutableLiveData(0)
     val running:MutableLiveData<Boolean> = MutableLiveData(false)
     val calBurned:MutableLiveData<Int> = MutableLiveData(0)
+    val currentSpeed:MutableLiveData<Float> = MutableLiveData(0f)
     var prev_count=0
     var total_count=0
     var startTime=0
@@ -75,16 +76,25 @@ class TrackerViewModel:ViewModel() {
                     calculateDistance(loc.value,location)
                     loc.postValue(location)
 
+                    Log.d("location check","speed: ${location.speed *3.6f}")
+                    currentSpeed.postValue(location.speed*3.6f)   //meter/sec to km/h
                 }
 
 
             }
         }
-        fusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
+
+        fusedLocationClient!!.requestLocationUpdates(
+            locationRequest!!,
+            locationCallback!!,
             Looper.getMainLooper()
         )
+    }
+
+    fun stopLocationUpdate()
+    {
+        if(locationCallback!=null && fusedLocationClient!=null)
+        fusedLocationClient!!.removeLocationUpdates(locationCallback!!)
     }
 
     private fun calculateDistance(loc1:Location?,loc2:Location){
@@ -145,10 +155,11 @@ class TrackerViewModel:ViewModel() {
     /*
     how to calculate calories burned(formuale)
     -https://www.medicalnewstoday.com/articles/325323#calories-burned-while-walking
+    met values - https://www.researchgate.net/figure/Examples-of-MET-values-for-cycling-jogging-and-walking_tbl2_269927658
      */
-    private suspend fun calculateCaloriesBurned(weight:Int, height:Int, age:Int, duration:Int, gender:String):Int{
+    private suspend fun calculateCaloriesBurned(weight:Int, height:Int, age:Int, duration:Int, gender:String): Int {
         var bmr=0
-        Log.d("timer","corutine function called")
+        Log.d("caloriesz","corutine function called")
         if(gender=="Male")
         {
             bmr= (66+(6.23*weight)+(12.7*height)-(6.8*age)).toInt()
@@ -158,8 +169,50 @@ class TrackerViewModel:ViewModel() {
             bmr= (66+(6.23*weight)+(12.7*height)-(6.8*age)).toInt()
         }
 
-        val met=2.3f
-        val caloriesBurned:Float=(bmr*met)/(24*duration)
+        val met:Float= with(currentSpeed.value!!){
+            var newm:Float=0f
+            newm=when {
+                this<2.0f->{
+                    0f
+                }
+                this<4.0f -> {
+                    3.0f
+                }
+                this<4.8f -> {
+                    3.5f
+                }
+                this<5.6f -> {
+                    4.0f
+                }
+                this<7.2f -> {
+                    4.5f
+                }
+                this<8f -> {
+                    8f
+                }
+                this<9.7f -> {
+                    10f
+                }
+                this<11.3f -> {
+                    11.5f
+                }
+                else -> {
+                    13.5f
+                }
+            }
+            newm
+        }
+
+        Log.d("calories","met: $met")
+
+        var caloriesBurned=0f
+
+        if(duration!=0)
+        {
+            caloriesBurned=(bmr*met)/(24*duration)
+        }
+        caloriesBurned /= 60    //cause we need duration in hour
+
         return caloriesBurned.toInt()
 
     }
@@ -179,16 +232,23 @@ class TrackerViewModel:ViewModel() {
             var startVal=true
             viewModelScope.launch {
                 while(startVal){
-                    val currentHour=c.get(Calendar.HOUR_OF_DAY)
-                    val currentMinute=c.get(Calendar.MINUTE)
+                    val newc=Calendar.getInstance()
+                    val currentHour=newc.get(Calendar.HOUR_OF_DAY)
+                    val currentMinute=newc.get(Calendar.MINUTE)
+                    Log.d("calories","currentMinute:$currentMinute minute:$minute" )
                     val d=(currentHour-hour)*60 + (currentMinute-minute)
+                    Log.d("calories","duration d:$d")
                     val cals=calculateCaloriesBurned(weight = weight,
                         height = height,
                         age = age,
                         gender = gender!!,
                     duration = d )
+                    Log.d("calories","cals value: $cals")
                     withContext(Main){
-                        calBurned.postValue(cals)
+                        if(cals>= calBurned.value!!)
+                        calBurned.postValue(calBurned.value!!+(cals-calBurned.value!!))
+                        else
+                            calBurned.postValue(calBurned.value!!+cals)
                     }
                     delay(60000) //1 minute
                     startVal=running.value!!

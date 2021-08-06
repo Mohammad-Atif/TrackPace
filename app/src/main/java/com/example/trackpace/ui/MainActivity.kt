@@ -59,7 +59,13 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkPermission(this,permissions)) {
-                viewModel.startLocationUpdates(this)
+                viewModel.running.observe(this, Observer {
+                    if(it)
+                    viewModel.startLocationUpdates(this)
+                    else
+                        viewModel.stopLocationUpdate()
+                })
+
             } else {
                 requestPermissions(arrayOf(permissions), PERMISSION_REQUEST)
             }
@@ -68,7 +74,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 //
 //            getLocationUpdates()
 //            startLocationUpdates()
-            viewModel.startLocationUpdates(this)
+            viewModel.running.observe(this, Observer {
+                if(it)
+                    viewModel.startLocationUpdates(this)
+                else
+                    viewModel.stopLocationUpdate()
+            })
 
         }
         if(ContextCompat.checkSelfPermission(this,
@@ -130,7 +141,12 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 //        getLocationUpdates()
 //        startLocationUpdates()
 
-        viewModel.startLocationUpdates(this)
+        viewModel.running.observe(this, Observer {
+            if(it)
+                viewModel.startLocationUpdates(this)
+            else
+                viewModel.stopLocationUpdate()
+        })
     }
 
 
