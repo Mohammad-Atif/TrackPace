@@ -63,6 +63,10 @@ class MainFragment : Fragment() {
         })
 
         binding.btnTimer.setOnClickListener {
+            if(RunningService.running.value!!)
+                binding.btnTimer.text="Start"
+            else
+                binding.btnTimer.text="Stop"
             RunningService.running.postValue(!RunningService.running.value!!).also {
                 RunningService.startcounting()
             }

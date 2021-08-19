@@ -215,14 +215,19 @@
         android:layout_marginTop="77dp"
         android:background="@drawable/rounded_corner"
         android:fontFamily="@font/poppins_medium"
-        android:text="@string/timer"
+        android:text="@string/start"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#E7E2CD"
         android:textSize="25sp"
+        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:drawableStart="@drawable/clockticking"
+        android:paddingStart="6dp"
+        android:drawableLeft="@drawable/clockticking"
+         />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
