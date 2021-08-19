@@ -24,6 +24,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.example.trackpace.daos.LocationDao
 import com.example.trackpace.databinding.FragmentMainBinding
+import com.example.trackpace.services.RunningService
 import com.example.trackpace.ui.MainActivity
 import com.example.trackpace.viewmodels.TrackerViewModel
 import com.google.android.gms.location.*
@@ -57,20 +58,21 @@ class MainFragment : Fragment() {
         sharedPreference= activity?.getSharedPreferences("forcounts",Context.MODE_PRIVATE) ?:return
         val prev_value=sharedPreference.getInt("prev_counts_key",0)
 
-        viewModel.travelledDistance.observe(viewLifecycleOwner, Observer { distance->
+        RunningService.travelledDistance.observe(viewLifecycleOwner, Observer { distance->
             binding.txtDistanceValue.text=distance.toString()
         })
 
         binding.btnTimer.setOnClickListener {
-
-                viewModel.startCount(requireContext().applicationContext)
+            RunningService.running.postValue(!RunningService.running.value!!).also {
+                RunningService.startcounting()
+            }
         }
 
-        viewModel.stepCount.observe(viewLifecycleOwner, Observer {steps->
+        RunningService.stepCount.observe(viewLifecycleOwner, Observer {steps->
             binding.txtStepsValue.text=steps.toString()
         })
 
-        viewModel.calBurned.observe(viewLifecycleOwner, Observer {cals->
+        RunningService.calBurned.observe(viewLifecycleOwner, Observer {cals->
             binding.txtCalBurnedValue.text=cals.toString()
         })
 

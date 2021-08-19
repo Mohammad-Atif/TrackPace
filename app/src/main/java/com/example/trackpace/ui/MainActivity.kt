@@ -2,6 +2,7 @@ package com.example.trackpace.ui
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.hardware.Sensor
@@ -21,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.trackpace.databinding.ActivityMainBinding
+import com.example.trackpace.services.RunningService
 import com.example.trackpace.viewmodels.TrackerViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -59,12 +61,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkPermission(this,permissions)) {
-                viewModel.running.observe(this, Observer {
-                    if(it)
-                    viewModel.startLocationUpdates(this)
-                    else
-                        viewModel.stopLocationUpdate()
-                })
+                Intent(this,RunningService::class.java).also {
+                    startService(it)
+                }
 
             } else {
                 requestPermissions(arrayOf(permissions), PERMISSION_REQUEST)
@@ -74,12 +73,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 //
 //            getLocationUpdates()
 //            startLocationUpdates()
-            viewModel.running.observe(this, Observer {
-                if(it)
-                    viewModel.startLocationUpdates(this)
-                else
-                    viewModel.stopLocationUpdate()
-            })
+            Intent(this,RunningService::class.java).also {
+                startService(it)
+            }
 
         }
         if(ContextCompat.checkSelfPermission(this,
@@ -93,7 +89,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         sensorManager=getSystemService(Context.SENSOR_SERVICE) as SensorManager
         stepsSensor= sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
-        viewModel.running.observe(this, Observer {
+        RunningService.running.observe(this, Observer {
             if(it){
                 if(stepsSensor!=null)
                 {
@@ -141,12 +137,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 //        getLocationUpdates()
 //        startLocationUpdates()
 
-        viewModel.running.observe(this, Observer {
-            if(it)
-                viewModel.startLocationUpdates(this)
-            else
-                viewModel.stopLocationUpdate()
-        })
+        Intent(this,RunningService::class.java).also {
+            startService(it)
+        }
     }
 
 
@@ -164,8 +157,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
     override fun onSensorChanged(event: SensorEvent?) {
         Log.d("timer","step counter worked")
-        if (viewModel.running.value==true) {
-            viewModel.updatestepCount(event?.values!![0].toInt())
+        if (RunningService.running.value==true) {
+            RunningService.stepcountupdate(event?.values!![0].toInt())
             //stepsValue.setText("" + event.values[0])
         }
 
