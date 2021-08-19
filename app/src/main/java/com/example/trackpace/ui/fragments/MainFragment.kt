@@ -55,6 +55,8 @@ class MainFragment : Fragment() {
 //            binding.mainFragtxt.text=t
 //        })
 
+        binding.txtStopwatch.visibility=View.INVISIBLE
+
         sharedPreference= activity?.getSharedPreferences("forcounts",Context.MODE_PRIVATE) ?:return
         val prev_value=sharedPreference.getInt("prev_counts_key",0)
 
@@ -63,14 +65,22 @@ class MainFragment : Fragment() {
         })
 
         binding.btnTimer.setOnClickListener {
-            if(RunningService.running.value!!)
+            if(RunningService.running.value!!) {
                 binding.btnTimer.text="Start"
-            else
+                binding.txtStopwatch.visibility=View.INVISIBLE
+            } else {
                 binding.btnTimer.text="Stop"
+                binding.txtStopwatch.visibility=View.VISIBLE
+            }
             RunningService.running.postValue(!RunningService.running.value!!).also {
                 RunningService.startcounting()
             }
         }
+
+        RunningService.timePassed.observe(this, Observer {
+            binding.txtStopwatch.text=it
+        })
+
 
         RunningService.stepCount.observe(viewLifecycleOwner, Observer {steps->
             binding.txtStepsValue.text=steps.toString()

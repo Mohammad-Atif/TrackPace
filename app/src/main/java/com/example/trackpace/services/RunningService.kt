@@ -6,13 +6,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.hardware.SensorManager
 import android.location.Location
-import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.trackpace.util.Constants
 import com.google.android.gms.location.*
 import kotlinx.coroutines.*
@@ -29,6 +27,10 @@ class RunningService :  LifecycleService(){
     private var locationRequest: LocationRequest?=null
     private var locationCallback: LocationCallback?=null
 
+    private var seconds:Int=0
+
+
+
     var sensorManager: SensorManager? = null
 
     val loc: MutableLiveData<Location> = MutableLiveData()
@@ -44,6 +46,8 @@ class RunningService :  LifecycleService(){
 
     companion object{
         private lateinit var instance: RunningService
+
+        val timePassed:MutableLiveData<String> = MutableLiveData("00:00:00")
 
         val travelledDistance: MutableLiveData<Float> = MutableLiveData(0f)
         val stepCount: MutableLiveData<Int> = MutableLiveData(0)
@@ -177,11 +181,13 @@ class RunningService :  LifecycleService(){
             Toast.makeText(this,"Counter Started", Toast.LENGTH_SHORT).show()
             running.postValue(true).also {
                 startCalorieTracking(sharedPreference)
+                stopwatch()
             }
 
             stepCount.postValue(0)
             travelledDistance.postValue(0f)
             calBurned.postValue(0)
+
         }
 
     }
@@ -301,6 +307,47 @@ class RunningService :  LifecycleService(){
             Log.d("timer","calorieCounter: Not running")
         }
 
+    }
+
+
+    private fun stopwatch(){
+        Log.d("stopwatch","${running.value.toString()}")
+        if(!running.value!!)
+        {
+            Log.d("stopwatch","${running.value.toString()}")
+            CoroutineScope(Dispatchers.IO).launch {
+
+                do
+                {
+                    val hours = seconds / 3600
+                    val minutes = seconds % 3600 / 60
+                    val secs = seconds % 60
+
+                    val time = java.lang.String
+                        .format(Locale.getDefault(),
+                            "%d:%02d:%02d", hours,
+                            minutes, secs)
+
+                    timePassed.postValue(time)
+                    seconds++
+                    delay(1000)  //1sec
+                    Log.d("stopwatch","$seconds")
+
+                }while(running.value!!)
+
+            }
+        }
+        else
+        {
+            seconds=0
+        }
+
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        seconds=0
     }
 
 

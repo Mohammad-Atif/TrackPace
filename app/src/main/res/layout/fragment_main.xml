@@ -13,6 +13,7 @@
         android:layout_width="123dp"
         android:layout_height="101dp"
 
+        android:layout_marginBottom="17dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
         app:layout_constraintBottom_toTopOf="@+id/cardDistance"
@@ -20,7 +21,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnTimer"
-        android:layout_marginBottom="17dp"
         app:layout_constraintVertical_chainStyle="packed">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,9 +81,9 @@
         android:id="@+id/cardDistance"
         android:layout_width="123dp"
         android:layout_height="101dp"
+        android:layout_marginBottom="17dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp"
-        android:layout_marginBottom="17dp"
         app:layout_constraintBottom_toTopOf="@+id/cardSteps"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -214,20 +214,34 @@
         android:layout_height="56dp"
         android:layout_marginTop="77dp"
         android:background="@drawable/rounded_corner"
+        android:drawableStart="@drawable/clockticking"
+        android:drawableLeft="@drawable/clockticking"
         android:fontFamily="@font/poppins_medium"
+        android:paddingStart="6dp"
+        android:paddingEnd="10dp"
         android:text="@string/start"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#E7E2CD"
         android:textSize="25sp"
-        android:paddingEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:drawableStart="@drawable/clockticking"
-        android:paddingStart="6dp"
-        android:drawableLeft="@drawable/clockticking"
-         />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtStopwatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="00:00:00"
+        android:textColor="#7b7b7b"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/cardCalBurned"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnTimer"
+        app:layout_constraintVertical_bias="0.37" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
