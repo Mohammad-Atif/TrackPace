@@ -21,9 +21,16 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.trackpace.R
 import com.example.trackpace.databinding.ActivityMainBinding
 import com.example.trackpace.services.RunningService
 import com.example.trackpace.viewmodels.TrackerViewModel
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
@@ -108,7 +115,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         })
 
+
+
+
         binding.bottomNavigationView.setupWithNavController(navhostFragment.findNavController())
+
 
 
 
@@ -167,6 +178,8 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         Log.d("timer","step counter worked")
     }
+
+
 
 
 }

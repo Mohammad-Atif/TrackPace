@@ -55,7 +55,7 @@ class MainFragment : Fragment() {
 //            binding.mainFragtxt.text=t
 //        })
 
-        binding.txtStopwatch.visibility=View.INVISIBLE
+        
 
         sharedPreference= activity?.getSharedPreferences("forcounts",Context.MODE_PRIVATE) ?:return
         val prev_value=sharedPreference.getInt("prev_counts_key",0)
