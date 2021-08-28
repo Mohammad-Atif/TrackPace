@@ -58,7 +58,8 @@ class MapFragment : Fragment() , OnMapReadyCallback {
                 mMap.addMarker(MarkerOptions()
                     .position(startLoc)
                     .title("Start"))
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(startLoc))
+                val zoomLvl=10f
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLoc,zoomLvl))
             }
 
 
