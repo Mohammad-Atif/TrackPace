@@ -56,6 +56,7 @@ class RunningService :  LifecycleService(){
 
         val running: MutableLiveData<Boolean> = MutableLiveData(false)
 
+        var startLocation: Location? = null
 
 
         fun stopService(){
@@ -114,6 +115,8 @@ class RunningService :  LifecycleService(){
                     // use your location object
                     // get latitude , longitude and other info from this
                     Log.d("location check","latt:${location.latitude} long:${location.longitude}")
+                    if(startLocation==null)
+                        startLocation=location
                     calculateDistance(loc.value,location)
                     loc.postValue(location)
 
@@ -335,6 +338,8 @@ class RunningService :  LifecycleService(){
 
                 }while(running.value!!)
 
+                seconds=0
+
             }
         }
         else
@@ -347,6 +352,7 @@ class RunningService :  LifecycleService(){
 
     override fun onDestroy() {
         super.onDestroy()
+        startLocation=null
         seconds=0
     }
 

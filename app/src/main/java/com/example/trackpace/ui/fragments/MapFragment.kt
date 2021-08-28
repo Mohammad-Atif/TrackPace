@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.trackpace.R
 import com.example.trackpace.databinding.FragmentMapBinding
+import com.example.trackpace.services.RunningService
 import com.example.trackpace.ui.MainActivity
 import com.example.trackpace.viewmodels.TrackerViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,20 +37,24 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 //        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
 //        mapFragment?.getMapAsync(this)
 
-        binding.mapView.getMapAsync{
-            mMap=it
-        }
+        binding.mapView.getMapAsync(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
+        val loc=RunningService.startLocation
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions()
-            .position(sydney)
-            .title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        if(loc!=null)
+        {
+            val startLoc = LatLng(loc.latitude, loc.longitude)
+            mMap.addMarker(MarkerOptions()
+                .position(startLoc)
+                .title("Start"))
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(startLoc))
+        }
+
     }
 
     override fun onResume() {
