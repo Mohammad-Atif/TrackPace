@@ -13,6 +13,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.example.trackpace.util.Constants
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
 import java.util.*
@@ -59,6 +60,7 @@ class RunningService :  LifecycleService(){
 
         var startLocation: MutableLiveData<Location> = MutableLiveData()
 
+        val LatLngList:MutableLiveData<MutableList<LatLng>> = MutableLiveData(mutableListOf())
 
         fun stopService(){
             Log.d("service","service is stopeed")
@@ -125,6 +127,9 @@ class RunningService :  LifecycleService(){
 //                    {
 //                        startLocation.value=location
 //                    }
+                    val list= LatLngList.value
+                    list!!.add(LatLng(location.latitude,location.longitude))
+                    LatLngList.postValue(list)
 
                     calculateDistance(loc.value,location)
                     loc.postValue(location)
