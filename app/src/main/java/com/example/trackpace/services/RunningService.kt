@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.trackpace.util.Constants
 import com.google.android.gms.location.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -33,7 +34,7 @@ class RunningService :  LifecycleService(){
 
     var sensorManager: SensorManager? = null
 
-    val loc: MutableLiveData<Location> = MutableLiveData()
+    val loc: MutableLiveData<Location?> = MutableLiveData(null)
 
     val currentSpeed: MutableLiveData<Float> = MutableLiveData(0f)
     var prev_count=0
@@ -56,7 +57,7 @@ class RunningService :  LifecycleService(){
 
         val running: MutableLiveData<Boolean> = MutableLiveData(false)
 
-        var startLocation: Location? = null
+        var startLocation: MutableLiveData<Location> = MutableLiveData()
 
 
         fun stopService(){
@@ -82,6 +83,7 @@ class RunningService :  LifecycleService(){
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         CoroutineScope(Dispatchers.Main).launch {
+
             startLocationUpdates()
         }
         return super.onStartCommand(intent, flags, startId)
@@ -93,12 +95,16 @@ class RunningService :  LifecycleService(){
     Done throud FusedLocationProviderClient class
      */
     @SuppressLint("MissingPermission")
-    fun startLocationUpdates() {
+    suspend fun startLocationUpdates() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationRequest= LocationRequest.create().apply {
             interval = TimeUnit.SECONDS.toMillis(10)
             fastestInterval = TimeUnit.SECONDS.toMillis(10)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        fusedLocationClient!!.lastLocation.addOnSuccessListener {
+            startLocation.value=it
         }
 
         // LocationCallback - Called when FusedLocationProviderClient has a new Location.
@@ -115,8 +121,11 @@ class RunningService :  LifecycleService(){
                     // use your location object
                     // get latitude , longitude and other info from this
                     Log.d("location check","latt:${location.latitude} long:${location.longitude}")
-                    if(startLocation==null)
-                        startLocation=location
+//                    if(startLocation.value==null)
+//                    {
+//                        startLocation.value=location
+//                    }
+
                     calculateDistance(loc.value,location)
                     loc.postValue(location)
 
@@ -154,6 +163,7 @@ class RunningService :  LifecycleService(){
             val number1digits:Float = String.format("%.1f", total_dis).toFloat()
             travelledDistance.postValue(number1digits)
         }
+
 
     }
 
@@ -335,6 +345,10 @@ class RunningService :  LifecycleService(){
                     seconds++
                     delay(1000)  //1sec
                     Log.d("stopwatch","$seconds")
+                    val condition = (startLocation.value==null)
+
+
+                    Log.d("mapCheck","is loc null(from stopwatch):$condition")
 
                 }while(running.value!!)
 
@@ -352,7 +366,7 @@ class RunningService :  LifecycleService(){
 
     override fun onDestroy() {
         super.onDestroy()
-        startLocation=null
+//        startLocation.value=null
         seconds=0
     }
 

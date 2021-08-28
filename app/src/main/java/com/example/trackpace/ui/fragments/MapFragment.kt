@@ -1,6 +1,7 @@
 package com.example.trackpace.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -38,22 +39,34 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 //        mapFragment?.getMapAsync(this)
 
         binding.mapView.getMapAsync(this)
+
+
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        val loc=RunningService.startLocation
+        RunningService.running.observe(viewLifecycleOwner,{isRunning->
+
+            if(isRunning)
+            {
+                val loc=RunningService.startLocation.value
+
+
+
+                val startLoc = LatLng(loc!!.latitude, loc!!.longitude)
+                mMap.addMarker(MarkerOptions()
+                    .position(startLoc)
+                    .title("Start"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(startLoc))
+            }
+
+
+        })
+
+
         // Add a marker in Sydney and move the camera
 
-        if(loc!=null)
-        {
-            val startLoc = LatLng(loc.latitude, loc.longitude)
-            mMap.addMarker(MarkerOptions()
-                .position(startLoc)
-                .title("Start"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(startLoc))
-        }
 
     }
 
