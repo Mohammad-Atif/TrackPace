@@ -25,6 +25,7 @@ import com.example.trackpace.R
 import com.example.trackpace.databinding.ActivityMainBinding
 import com.example.trackpace.services.RunningService
 import com.example.trackpace.viewmodels.TrackerViewModel
+import android.os.Build.VERSION_CODES.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     var sensorManager: SensorManager? = null
     var stepsSensor: Sensor?=null
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    @RequiresApi(KITKAT)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= M) {
             if (checkPermission(this,permissions)) {
                 Intent(this,RunningService::class.java).also {
                     startService(it)
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         }
 
-        sensorManager=getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager=getSystemService(SENSOR_SERVICE) as SensorManager
         stepsSensor= sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
 
         RunningService.running.observe(this, Observer {

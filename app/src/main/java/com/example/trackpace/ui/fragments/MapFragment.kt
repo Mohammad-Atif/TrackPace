@@ -11,6 +11,7 @@ import com.example.trackpace.R
 import com.example.trackpace.databinding.FragmentMapBinding
 import com.example.trackpace.services.RunningService
 import com.example.trackpace.ui.MainActivity
+import com.example.trackpace.util.Constants.Companion.zoomLvl
 import com.example.trackpace.viewmodels.TrackerViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,7 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 
 
-class MapFragment : Fragment() , OnMapReadyCallback {
+class MapFragment : Fragment()  {
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var mMap: GoogleMap
@@ -38,14 +39,17 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 //        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
 //        mapFragment?.getMapAsync(this)
 
-        binding.mapView.getMapAsync(this)
+        binding.mapView.getMapAsync{
+            mMap=it
+            drawRoute()
+        }
 
 
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
 
+    private fun drawRoute()
+    {
         RunningService.running.observe(viewLifecycleOwner,{isRunning->
 
             if(isRunning)
@@ -55,16 +59,12 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
 
                 val startLoc = LatLng(loc!!.latitude, loc!!.longitude)
-                mMap.addMarker(MarkerOptions()
-                    .position(startLoc)
-                    .title("Start"))
-                val zoomLvl=18f
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLoc,zoomLvl))
+//                mMap.addMarker(MarkerOptions()
+//                    .position(startLoc)
+//                    .title("Start"))
+
+//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLoc,zoomLvl))
             }
-
-
-
-
 
 
         })
@@ -73,14 +73,20 @@ class MapFragment : Fragment() , OnMapReadyCallback {
             if(RunningService.running.value!!){
                 route.addAll(it)
                 mMap.addPolyline(route)
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(it[it.size-1],zoomLvl))
             }
         })
-
 
         // Add a marker in Sydney and move the camera
 
 
     }
+
+//    override fun onMapReady(googleMap: GoogleMap) {
+//        mMap = googleMap
+//
+//
+//    }
 
     override fun onResume() {
         super.onResume()
