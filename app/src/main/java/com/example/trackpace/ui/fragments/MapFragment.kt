@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.example.trackpace.R
 import com.example.trackpace.databinding.FragmentMapBinding
 import com.example.trackpace.services.RunningService
@@ -45,7 +46,17 @@ class MapFragment : Fragment()  {
         }
 
 
+        RunningService.travelledDistance.observe(viewLifecycleOwner, Observer { distance->
+            binding.txtDistanceMap.text=distance.toString()
+        })
 
+        RunningService.stepCount.observe(viewLifecycleOwner, Observer {steps->
+            binding.txtStepsMap.text=steps.toString()
+        })
+
+        RunningService.calBurned.observe(viewLifecycleOwner, Observer {cals->
+            binding.txtCalBurnedValueMap.text=cals.toString()
+        })
 
 
 
