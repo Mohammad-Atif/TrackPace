@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.trackpace.R
 import com.example.trackpace.databinding.FragmentMapBinding
@@ -25,6 +26,7 @@ class MapFragment : Fragment()  {
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var mMap: GoogleMap
+    private val viewModel: TrackerViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

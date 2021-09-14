@@ -24,10 +24,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.example.trackpace.daos.LocationDao
 import com.example.trackpace.databinding.FragmentMainBinding
+import com.example.trackpace.models.Run
 import com.example.trackpace.services.RunningService
 import com.example.trackpace.ui.MainActivity
 import com.example.trackpace.viewmodels.TrackerViewModel
 import com.google.android.gms.location.*
+import java.util.*
 
 
 class MainFragment : Fragment() {
@@ -68,6 +70,22 @@ class MainFragment : Fragment() {
             if(RunningService.running.value!!) {
                 binding.btnTimer.text="Start"
                 binding.txtStopwatch.visibility=View.INVISIBLE
+
+                val c = Calendar.getInstance()
+
+                val month = c.get(Calendar.MONTH).toString()
+                val day = c.get(Calendar.DAY_OF_MONTH).toString()
+
+                viewModel.submitRun(
+                    Run(
+                        "https://rin.org.uk/resource/resmgr/nav21/nav21_map.png",
+                        "${day}:${month}",
+                        binding.TxtDistance.text.toString(),
+                        binding.txtStopwatch.text.toString(),
+                        binding.TxtCalBurned.text.toString()
+                    )
+                )
+
             } else {
                 binding.btnTimer.text="Stop"
                 binding.txtStopwatch.visibility=View.VISIBLE
@@ -77,7 +95,7 @@ class MainFragment : Fragment() {
             }
         }
 
-        RunningService.timePassed.observe(this, Observer {
+        RunningService.timePassed.observe(viewLifecycleOwner, Observer {
             binding.txtStopwatch.text=it
         })
 

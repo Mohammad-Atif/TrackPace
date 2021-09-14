@@ -26,6 +26,9 @@ import com.example.trackpace.databinding.ActivityMainBinding
 import com.example.trackpace.services.RunningService
 import com.example.trackpace.viewmodels.TrackerViewModel
 import android.os.Build.VERSION_CODES.*
+import com.example.trackpace.db.RunDatabase
+import com.example.trackpace.repository.RunRepository
+import com.example.trackpace.viewmodels.TrackerViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -62,8 +65,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val runRepository=RunRepository(RunDatabase.getInstance(application))
+        val trackerViewModelProvider= TrackerViewModelProvider(runRepository)
 
-        viewModel=ViewModelProvider(this).get(TrackerViewModel::class.java)
+        viewModel=ViewModelProvider(this,trackerViewModelProvider).get(TrackerViewModel::class.java)
 
 
 
