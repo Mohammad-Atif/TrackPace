@@ -19,6 +19,7 @@ class HistoryRecyclerViewAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>()
         val historyDate: TextView = view.findViewById(R.id.TxtHistoryDate)
         val historyDuration: TextView = view.findViewById(R.id.TxtHistoryDuration)
         val historyCals : TextView = view.findViewById(R.id.txtHistoryCal)
+        val historyDistance : TextView = view.findViewById(R.id.txtHistoryDistance)
         val historyRunImg : ImageView = view.findViewById(R.id.HistoryImg)
     }
 
@@ -36,6 +37,7 @@ class HistoryRecyclerViewAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>()
                 holder.historyCals.text= listOfHistory[position].calories
                 holder.historyDate.text= listOfHistory[position].date
                 holder.historyDuration.text= listOfHistory[position].duration
+                holder.historyDistance.text= listOfHistory[position].distance
                 Glide.with(holder.itemView).load(listOfHistory[position].imageUri).into(holder.historyRunImg)
             }
         }

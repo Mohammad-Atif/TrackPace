@@ -80,9 +80,9 @@ class MainFragment : Fragment() {
                     Run(
                         "https://rin.org.uk/resource/resmgr/nav21/nav21_map.png",
                         "${day}:${month}",
-                        binding.TxtDistance.text.toString(),
+                        "${binding.txtDistanceValue.text.toString()} m",
                         binding.txtStopwatch.text.toString(),
-                        binding.TxtCalBurned.text.toString()
+                        "${binding.txtCalBurnedValue.text.toString()} Cal"
                     )
                 )
 
