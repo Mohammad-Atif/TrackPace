@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.LoginActivity">
+
+    <TextView
+        android:id="@+id/txtWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:contentDescription="@string/for_user_name"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/welcome"
+        android:textColor="#000000"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="303dp"
+        android:contentDescription="@string/for_user_name"
+        android:text="@string/name"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtWelcome" />
+
+    <TextView
+        android:id="@+id/txtAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="@string/age"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
+    <TextView
+        android:id="@+id/txtGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="@string/gender"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/sp_Age" />
+
+    <TextView
+        android:id="@+id/txtWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="@string/weight"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/sp_Gender" />
+
+    <TextView
+        android:id="@+id/txtHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:text="@string/height"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/textInputWeight" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="312dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_txtfield"
+        android:ems="10"
+        android:importantForAutofill="no"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="@+id/txtName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtName"
+        app:layout_constraintTop_toBottomOf="@+id/txtName"
+
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Spinner
+        android:id="@+id/sp_Age"
+        android:layout_width="312dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_txtfield"
+        app:layout_constraintEnd_toEndOf="@+id/txtAge"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtAge"
+        app:layout_constraintTop_toBottomOf="@+id/txtAge"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Spinner
+        android:id="@+id/sp_Gender"
+        android:layout_width="312dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_txtfield"
+        android:entries="@array/genders"
+        app:layout_constraintEnd_toEndOf="@+id/txtAge"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtAge"
+        app:layout_constraintTop_toBottomOf="@+id/txtGender"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputWeight"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="312dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="#000000"
+        app:boxStrokeWidth="1dp"
+        app:endIconDrawable="@drawable/kgpng"
+        app:hintEnabled="false"
+
+        app:layout_constraintEnd_toEndOf="@+id/txtWeight"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtWeight"
+        app:layout_constraintTop_toBottomOf="@+id/txtWeight">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputWeightEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_width="149dp"
+        android:layout_height="43dp"
+        android:background="@drawable/rounded_corner"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="@string/start"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="110dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/ftText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/textInputWeight"
+        app:layout_constraintTop_toBottomOf="@+id/txtHeight"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="110dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/inText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ftText"
+        app:layout_constraintTop_toBottomOf="@+id/txtHeight"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/inText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/in"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="@+id/textInputWeight"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinner2"
+        app:layout_constraintTop_toTopOf="@+id/spinner"
+        app:layout_constraintVertical_bias="0.555" />
+
+    <TextView
+        android:id="@+id/ftText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ft"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toStartOf="@+id/spinner2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintTop_toTopOf="@+id/spinner" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
