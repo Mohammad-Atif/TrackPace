@@ -1,7 +1,9 @@
 package com.example.trackpace.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import com.example.trackpace.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -19,7 +21,13 @@ class LoginActivity : AppCompatActivity() {
         binding= ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+//        Handler().postDelayed(
+//            {
+//                val intent= Intent(this, MainActivity::class.java)
+//                startActivity(intent)
+//                finish()
+//            },1600
+//        )
 
     }
 

@@ -98,6 +98,7 @@
         android:ems="10"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
+        android:paddingStart="10dp"
         app:layout_constraintEnd_toEndOf="@+id/txtName"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/txtName"
@@ -169,25 +170,30 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
 
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spHeightFt"
         tools:ignore="TouchTargetSizeCheck" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spHeightFt"
         android:layout_width="110dp"
         android:layout_height="48dp"
         android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_txtfield"
+        android:entries="@array/feets"
         app:layout_constraintEnd_toStartOf="@+id/ftText"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="@+id/textInputWeight"
         app:layout_constraintTop_toBottomOf="@+id/txtHeight"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/spHeightIn"
         android:layout_width="110dp"
         android:layout_height="48dp"
         android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_txtfield"
+        android:entries="@array/inches"
         app:layout_constraintEnd_toStartOf="@+id/inText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/ftText"
@@ -201,11 +207,11 @@
         android:text="@string/in"
         android:textColor="#000000"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintBottom_toBottomOf="@+id/spHeightFt"
         app:layout_constraintEnd_toEndOf="@+id/textInputWeight"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/spinner2"
-        app:layout_constraintTop_toTopOf="@+id/spinner"
+        app:layout_constraintStart_toEndOf="@+id/spHeightIn"
+        app:layout_constraintTop_toTopOf="@+id/spHeightFt"
         app:layout_constraintVertical_bias="0.555" />
 
     <TextView
@@ -215,11 +221,11 @@
         android:text="@string/ft"
         android:textColor="#000000"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
-        app:layout_constraintEnd_toStartOf="@+id/spinner2"
+        app:layout_constraintBottom_toBottomOf="@+id/spHeightFt"
+        app:layout_constraintEnd_toStartOf="@+id/spHeightIn"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/spinner"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintStart_toEndOf="@+id/spHeightFt"
+        app:layout_constraintTop_toTopOf="@+id/spHeightFt" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
