@@ -136,14 +136,12 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="312dp"
         android:layout_height="48dp"
-        android:layout_marginTop="4dp"
         app:boxCornerRadiusBottomEnd="12dp"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
         app:boxCornerRadiusTopStart="12dp"
         app:boxStrokeColor="#000000"
         app:boxStrokeWidth="1dp"
-        app:endIconDrawable="@drawable/kgpng"
         app:hintEnabled="false"
 
         app:layout_constraintEnd_toEndOf="@+id/txtWeight"
@@ -154,12 +152,14 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/textInputWeightEdit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
+            android:inputType="numberSigned"
+            android:layout_height="match_parent"
+            android:drawableEnd="@drawable/kgpng"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/btnStart"
         android:layout_width="149dp"
         android:layout_height="43dp"
         android:background="@drawable/rounded_corner"
@@ -168,8 +168,8 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
 
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spHeightFt"
         tools:ignore="TouchTargetSizeCheck" />
 
