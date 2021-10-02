@@ -46,6 +46,10 @@ class RunningService :  LifecycleService(){
         instance=this
     }
 
+    /*
+    Having mutable livedata in companion object of Service so that we can directly observe it from the
+    main fragment to update the ui
+     */
     companion object{
         private lateinit var instance: RunningService
 
@@ -127,6 +131,8 @@ class RunningService :  LifecycleService(){
 //                    {
 //                        startLocation.value=location
 //                    }
+
+                    //adding latlong list for the map fragment to draw polylines
                     val list= LatLngList.value
                     list!!.add(LatLng(location.latitude,location.longitude))
                     LatLngList.postValue(list)
@@ -156,6 +162,10 @@ class RunningService :  LifecycleService(){
         instance.stopSelf()
     }
 
+    /*
+    This function calculate the distance between two location(location object that we get from location callback )
+    it also then round of the distance upto 1 digit of decimal value the add to travelled distance livedata
+     */
     private fun calculateDistance(loc1: Location?, loc2: Location){
         if(loc1!=null ){
             val dis=loc1.distanceTo(loc2)
@@ -211,6 +221,11 @@ class RunningService :  LifecycleService(){
     }
 
 
+    /*
+    function to calcute the new step counts because it starts counting from the previous counted step
+    For example if a user walked 10 steps on first opening of app then on opening the app second time
+    it starts counting from 10,11 like that so to get current steps we subtract it from previous one
+     */
     fun updatestepCount(counts:Int){
         Log.d("timer","update count:$counts")
         total_count=counts

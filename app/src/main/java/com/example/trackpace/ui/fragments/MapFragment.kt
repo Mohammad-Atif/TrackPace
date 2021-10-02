@@ -67,6 +67,11 @@ class MapFragment : Fragment()  {
     }
 
 
+    /*
+    This function will draw user's running route on the map
+    It observe the latlong list of Running service which is updated on each location callback
+    Then it draw the polylines
+     */
     private fun drawRoute()
     {
         RunningService.running.observe(viewLifecycleOwner,{isRunning->

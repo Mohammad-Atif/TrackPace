@@ -47,10 +47,18 @@ class TrackerViewModel(
         db= RunDatabase.getInstance(application)
     }
 
+    /*
+    Function to add run details in room database when user press stop button
+     */
     fun submitRun(run: Run) = viewModelScope.launch {
         runRepository.addRun(run)
         runList.value=runRepository.getRuns()
     }
+
+    /*
+    This function will get all the runs from the room database and then it updates the recycler view
+    list
+     */
 
     fun getRun(historyRecyclerViewAdapter: HistoryRecyclerViewAdapter){
 
